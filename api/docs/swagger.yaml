@@ -1,0 +1,41 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  description: La classe cette API
+  title: CrossX API
+  version: "1.0"
+paths:
+  /public/health:
+    get:
+      description: Get API health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check endpoint
+      tags:
+      - public
+  /test:
+    get:
+      description: Test endpoint requiring authentication
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Test protected endpoint
+      tags:
+      - protected
+swagger: "2.0"
