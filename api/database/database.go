@@ -17,6 +17,8 @@ func SetupDB() {
 	dbname := "crossx"
 	port := "5432"
 
+	var err error
+
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		host,
@@ -26,7 +28,7 @@ func SetupDB() {
 		port,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

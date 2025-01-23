@@ -1,12 +1,13 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type Comment struct {
-	gorm.Model
-	ID int `json:"id" gorm:"primaryKey;autoIncrement"`
+	ID        uint      `json:"id" gorm:"primaryKey;autoIncrement"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 
 	Content string `json:"content"`
 	Post    Post   `json:"post" gorm:"foreignKey:PostID"`

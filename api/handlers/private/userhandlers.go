@@ -52,6 +52,7 @@ func GetUser(c *gin.Context) {
 //	@Security		ApiKeyAuth
 func CreateUser(c *gin.Context) {
 	db := database.GetDB()
+
 	var input models.User
 
 	if err := c.ShouldBindJSON(&input); err != nil {

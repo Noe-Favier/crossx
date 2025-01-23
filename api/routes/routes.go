@@ -59,6 +59,8 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	r.setupPublicRoutes()
 	r.setupProtectedRoutes()
 	r.setupProtectedCommentRoutes()
+	r.setupProtectedPostRoutes()
+	r.setupProtectedUserRoutes()
 
 	return r.router
 }
