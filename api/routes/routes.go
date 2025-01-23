@@ -101,7 +101,7 @@ func (r *Routes) setupProtectedPostRoutes() {
 }
 
 func (r *Routes) setupProtectedUserRoutes() {
-	protected := r.router.Group("/api/v1/post")
+	protected := r.router.Group("/api/v1/user")
 	protected.Use(middlewares.AuthMiddleware())
 	{
 		protected.GET("/:id", privateHandlers.GetUser)       // Consultation d'un user
