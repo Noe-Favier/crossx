@@ -5,7 +5,6 @@ import (
 	privateHandlers "crossx/handlers/private"
 	publicHandlers "crossx/handlers/public"
 	middlewares "crossx/middlewares"
-
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -56,7 +55,11 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	r.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	// Routes setup
+	// Routes publiques
 	r.setupPublicRoutes()
+	r.setupPublicLoginRoutes()
+
+	// Routes privées
 	r.setupProtectedRoutes()
 	r.setupProtectedCommentRoutes()
 	r.setupProtectedPostRoutes()
@@ -65,10 +68,18 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	return r.router
 }
 
-func (r *Routes) setupPublicRoutes() {
+func (r *Routes) setupPublicLoginRoutes() {
 	public := r.router.Group("/api/v1/public")
 	{
 		public.GET("/health", publicHandlers.HealthHandler)
+	}
+}
+
+func (r *Routes) setupPublicRoutes() {
+	public := r.router.Group("/api/v1/public")
+	{
+		public.POST("/login", publicHandlers.Login)
+		// Other existing public routes
 	}
 }
 

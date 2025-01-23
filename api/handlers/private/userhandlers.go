@@ -1,6 +1,7 @@
 package private
 
 import (
+	"crossx/auth"
 	"crossx/database"
 	"crossx/models"
 	"github.com/gin-gonic/gin"
@@ -60,6 +61,16 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	// Hash the password before storing
+	hashedPassword, err := auth.HashPassword(input.PasswordHash)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password hashing failed"})
+		return
+	}
+
+	// Replace the plain text password with the hashed version
+	input.PasswordHash = hashedPassword
+
 	if err := db.Create(&input).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -106,8 +117,17 @@ func UpdateUser(c *gin.Context) {
 	user.Bio = input.Bio
 	user.Email = input.Email
 	user.Username = input.Username
-	user.PasswordHash = input.PasswordHash
 	user.ProfilePictureUrl = input.ProfilePictureUrl
+
+	// Hash password if a new one is provided
+	if input.PasswordHash != "" {
+		hashedPassword, err := auth.HashPassword(input.PasswordHash)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Password hashing failed"})
+			return
+		}
+		user.PasswordHash = hashedPassword
+	}
 
 	if err := db.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
