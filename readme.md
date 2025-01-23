@@ -13,3 +13,8 @@
 - `go get -u github.com/swaggo/swag`
 - `swag init`
 - `~/go/bin/swag init & go run .`
+
+### ./frontend
+
+- `npm install`
+- `npx expo start`
