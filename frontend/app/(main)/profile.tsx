@@ -7,6 +7,8 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
+import { Button, Provider, Toast } from '@ant-design/react-native';
+
 export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
@@ -19,6 +21,9 @@ export default function TabTwoScreen() {
           style={styles.headerImage}
         />
       }>
+      <Button onPress={() => Toast.info('This is a toast tips')}>
+        Start
+      </Button>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Explore</ThemedText>
       </ThemedView>
