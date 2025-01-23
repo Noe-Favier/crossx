@@ -58,6 +58,7 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	// Routes setup
 	r.setupPublicRoutes()
 	r.setupProtectedRoutes()
+	r.setupProtectedCommentRoutes()
 
 	return r.router
 }
@@ -74,5 +75,38 @@ func (r *Routes) setupProtectedRoutes() {
 	protected.Use(middlewares.AuthMiddleware())
 	{
 		protected.GET("/test", privateHandlers.TestHandler)
+	}
+}
+
+func (r *Routes) setupProtectedCommentRoutes() {
+	protected := r.router.Group("/api/v1/comment")
+	protected.Use(middlewares.AuthMiddleware())
+	{
+		protected.GET("/:id", privateHandlers.GetComment)       // Consultation d'un commentaire
+		protected.POST("/", privateHandlers.CreateComment)      // Création d'un commentaire
+		protected.PUT("/:id", privateHandlers.UpdateComment)    // Modification d'un commentaire
+		protected.DELETE("/:id", privateHandlers.DeleteComment) // Suppression d'un commentaire
+	}
+}
+
+func (r *Routes) setupProtectedPostRoutes() {
+	protected := r.router.Group("/api/v1/post")
+	protected.Use(middlewares.AuthMiddleware())
+	{
+		protected.GET("/:id", privateHandlers.GetPost)       // Consultation d'un post
+		protected.POST("/", privateHandlers.CreatePost)      // Création d'un post
+		protected.PUT("/:id", privateHandlers.UpdatePost)    // Modification d'un post
+		protected.DELETE("/:id", privateHandlers.DeletePost) // Suppression d'un post
+	}
+}
+
+func (r *Routes) setupProtectedUserRoutes() {
+	protected := r.router.Group("/api/v1/post")
+	protected.Use(middlewares.AuthMiddleware())
+	{
+		protected.GET("/:id", privateHandlers.GetUser)       // Consultation d'un user
+		protected.POST("/", privateHandlers.CreateUser)      // Création d'un user
+		protected.PUT("/:id", privateHandlers.UpdateUser)    // Modification d'un user
+		protected.DELETE("/:id", privateHandlers.DeleteUser) // Suppression d'un user
 	}
 }

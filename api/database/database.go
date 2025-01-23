@@ -8,6 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var db *gorm.DB // Variable globale pour stocker la connexion
+
 func SetupDB() {
 	host := "localhost"
 	user := "gorm"
@@ -32,4 +34,9 @@ func SetupDB() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Post{})
 	db.AutoMigrate(&models.Comment{})
+}
+
+// GetDB retourne la connexion à la base de données
+func GetDB() *gorm.DB {
+	return db
 }
