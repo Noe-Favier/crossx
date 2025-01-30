@@ -1,12 +1,10 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Stack } from 'expo-router';
 
-
-export default function TabLayout() {
+export default function MainLayout() {
   return (
-    <Tabs>
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="profile" />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="profile" />
+    </Stack>
   );
 }
