@@ -4,6 +4,8 @@ import (
 	//"crossx/database"
 	"crossx/database"
 	"crossx/routes"
+	"github.com/joho/godotenv"
+	"log"
 )
 
 // @title		CrossX API
@@ -15,6 +17,11 @@ func main() {
 
 	// precond
 	database.SetupDB()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	// run server
 	r := routes.New()
