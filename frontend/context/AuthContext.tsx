@@ -4,7 +4,7 @@ import { User } from '@/models/user';
 import api, { apiGetMe, apiLogin } from '@/services/api';
 
 interface AuthContextType {
-    user: { user: User | null, token: string } | null;
+    userState: { user: User | null, token: string } | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -44,5 +44,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return user;
     }
 
-    return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ userState: user, login, logout }}>{children}</AuthContext.Provider>;
 };

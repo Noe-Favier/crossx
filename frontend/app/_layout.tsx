@@ -36,7 +36,7 @@ export default function RootLayout() {
 }
 
 export function AuthenticatedStack() {
-  const userState = useAuth().user;
+  const userState = useAuth().userState;
   const tabBarItems = [
     {
       title: 'Home',
