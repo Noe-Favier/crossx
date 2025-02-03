@@ -1,12 +1,13 @@
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Flex, Icon, WingBlank } from '@ant-design/react-native';
 import { useFonts } from 'expo-font';
-import { Stack, router } from 'expo-router';
+import { Stack, router, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import LoginScreen from './(main)/login';
+import { useRoute } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,6 +38,8 @@ export default function RootLayout() {
 
 export function AuthenticatedStack() {
   const userState = useAuth().userState;
+  const pathname = usePathname();
+  //
   const tabBarItems = [
     {
       title: 'Home',
@@ -49,9 +52,9 @@ export function AuthenticatedStack() {
       url: '/profile' as const,
     },
     {
-      title: 'Settings',
-      icon: 'setting',
-      url: '/settings' as const,
+      title: 'New post',
+      icon: 'file-add',
+      url: '/post' as const,
     }
   ]
 
@@ -95,16 +98,20 @@ export function AuthenticatedStack() {
 
         {/* tab bar */}
         <Flex justify='around' align='center' style={{ backgroundColor: '#f5f5f9', height: '8%' }}>
-          {tabBarItems.map((item) => (
-            <Pressable
-              key={item.url}
-              onPress={() => router.push(`/(main)${item.url}` as any)}
-              android_ripple={{ color: 'lightgray' }}
-              style={{ flexBasis: '33%', alignItems: 'center', justifyContent: 'center', height: 50 }}>
-              <Icon name={item.icon as any} size='lg' color='#000' />
-              <Text>{item.title}</Text>
-            </Pressable>
-          ))}
+          {tabBarItems.map((item) => {
+            const cleanedPathname = pathname.replace('/(main)', '');
+            const isActived = cleanedPathname === item.url;
+            return (
+              <Pressable
+                key={item.url}
+                onPress={() => router.push(`/(main)${item.url}` as any)}
+                android_ripple={{ color: 'lightgray' }}
+                style={{ flexBasis: '33%', alignItems: 'center', justifyContent: 'center', height: 50 }}>
+                <Icon name={item.icon as any} size='lg' color={isActived ? '#008' : '#000'} />
+                <Text style={{ color: isActived ? '#008' : '#000' }}>{item.title}</Text>
+              </Pressable>
+            )
+          })}
         </Flex>
       </SafeAreaView >
     </SafeAreaProvider >

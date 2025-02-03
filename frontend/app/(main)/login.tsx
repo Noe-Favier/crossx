@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
+import { Button } from '@ant-design/react-native';
 
 export default function LoginScreen() {
     const { login } = useAuth();
@@ -8,10 +9,19 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
 
     return (
-        <View>
-            <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-            <TextInput placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
-            <Button title="Login" onPress={() => login(email, password)} />
+        <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'center' }}>
+            <TextInput style={inputStyle} placeholder="Email" value={email} onChangeText={setEmail} />
+            <TextInput style={inputStyle} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+            <Button type='ghost' onPress={() => login(email, password)}>
+                Login
+            </Button>
         </View>
     );
 }
+
+const inputStyle = {
+    marginBottom: 20,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+};
