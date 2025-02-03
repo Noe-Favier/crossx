@@ -21,9 +21,12 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
 
     return (
         <FlatList
+            scrollEnabled={true}
             data={posts}
             renderItem={renderPost}
             keyExtractor={(item) => item.id.toString()}
+            initialNumToRender={10}
+            maxToRenderPerBatch={5}
             ListEmptyComponent={
                 <View style={{ alignItems: 'center', marginTop: 20 }}>
                     <Text>Aucun post à afficher</Text>
