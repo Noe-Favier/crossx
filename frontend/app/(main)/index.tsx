@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Button, Flex, WingBlank } from '@ant-design/react-native';
+import { Button, Flex, View, WingBlank } from '@ant-design/react-native';
 import { ScrollView } from 'react-native';
 import PostList from '@/components/PostList';
-import { Post } from '../models/post';
+import { Post } from '@/models/post';
 
 console.log('HomeScreen');
 
@@ -16,6 +16,9 @@ const posts: Post[] = [
     media_url: "https://example.com/media1.jpg",
     user: {
       id: 1,
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
       username: "John Doe",
     },
     user_id: 1,
@@ -29,6 +32,9 @@ const posts: Post[] = [
     user: {
       id: 2,
       username: "Jane Smith",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 2,
   },
@@ -41,6 +47,9 @@ const posts: Post[] = [
     user: {
       id: 3,
       username: "Alice Johnson",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 3,
   },
@@ -53,6 +62,9 @@ const posts: Post[] = [
     user: {
       id: 4,
       username: "Bob Lee",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 4,
   },
@@ -65,6 +77,9 @@ const posts: Post[] = [
     user: {
       id: 5,
       username: "Charlie Brown",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 5,
   },
@@ -77,6 +92,9 @@ const posts: Post[] = [
     user: {
       id: 6,
       username: "David Wilson",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 6,
   },
@@ -89,6 +107,9 @@ const posts: Post[] = [
     user: {
       id: 7,
       username: "Emma Scott",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 7,
   },
@@ -101,6 +122,9 @@ const posts: Post[] = [
     user: {
       id: 8,
       username: "Frank Harris",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 8,
   },
@@ -113,6 +137,9 @@ const posts: Post[] = [
     user: {
       id: 9,
       username: "Grace Lee",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 9,
   },
@@ -125,6 +152,9 @@ const posts: Post[] = [
     user: {
       id: 10,
       username: "Henry Clark",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 10,
   },
@@ -137,6 +167,9 @@ const posts: Post[] = [
     user: {
       id: 11,
       username: "Isla Adams",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 11,
   },
@@ -149,6 +182,9 @@ const posts: Post[] = [
     user: {
       id: 12,
       username: "Jack Walker",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 12,
   },
@@ -161,6 +197,9 @@ const posts: Post[] = [
     user: {
       id: 13,
       username: "Kimberly Young",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 13,
   },
@@ -173,6 +212,9 @@ const posts: Post[] = [
     user: {
       id: 14,
       username: "Liam Martin",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 14,
   },
@@ -185,6 +227,9 @@ const posts: Post[] = [
     user: {
       id: 15,
       username: "Mia Thompson",
+      bio: 'hey',
+      email: 'mail@mail.mail',
+      profile_picture_url: 'https://avatars.githubusercontent.com/u/91917411?v=4',
     },
     user_id: 15,
   },
@@ -192,12 +237,8 @@ const posts: Post[] = [
 
 export default function HomeScreen() {
   return (
-    <Flex direction="column" align="center" justify="center">
-      <WingBlank>
-        <ScrollView>
-          <PostList posts={posts} />
-        </ScrollView>
-      </WingBlank>
-    </Flex>
+    <View style={{ width: '100%' }}>
+      <PostList posts={posts} />
+    </View>
   );
 }

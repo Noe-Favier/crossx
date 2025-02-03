@@ -5,6 +5,8 @@ import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,35 +49,37 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Flex style={{ backgroundColor: '#f5f5f9' }} justify='between'>
-        <Flex align='center' justify='start'>
-          <WingBlank style={{ paddingLeft: 1, paddingRight: 0, marginRight: 0, marginLeft: 10 }}>
-            <Icon name='heat-map' size='lg' color='#000' />
-          </WingBlank>
-          <WingBlank>
-            <Text style={{ fontSize: 17, paddingTop: 4, fontFamily: 'Macondo' }}>
-              Donjons et Confessions
-            </Text>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Flex style={{ backgroundColor: '#f5f5f9' }} justify='between'>
+          <Flex align='center' justify='start'>
+            <WingBlank style={{ paddingLeft: 1, paddingRight: 0, marginRight: 0, marginLeft: 10 }}>
+              <Icon name='heat-map' size='lg' color='#000' />
+            </WingBlank>
+            <WingBlank>
+              <Text style={{ fontSize: 17, paddingTop: 4, fontFamily: 'Macondo' }}>
+                Donjons et Confessions
+              </Text>
+            </WingBlank>
+          </Flex>
+          <WingBlank style={{ marginRight: 0 }}>
+            <TouchableOpacity style={{ backgroundColor: 'none' }} onPress={() => router.push('/(main)/profile')}>
+              <Icon name='plus-circle' size='lg' color='black' style={{ marginRight: 5 }} />
+            </TouchableOpacity>
           </WingBlank>
         </Flex>
-        <WingBlank style={{ marginRight: 0 }}>
-          <TouchableOpacity style={{ backgroundColor: 'none' }} onPress={() => router.push('/(main)/profile')}>
-            <Icon name='plus-circle' size='lg' color='black' style={{ marginRight: 5 }} />
-          </TouchableOpacity>
-        </WingBlank>
-      </Flex>
 
-      <HomeButton />
+        <HomeButton />
 
-      {/* router outlet */}
-      <View style={{ padding: 5, flex: 1 }}>
-        <View style={{ borderRadius: 12, flex: 1, overflow: 'hidden' }}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(main)" />
-          </Stack>
+        {/* router outlet */}
+        <View style={{ padding: 5, flex: 1 }}>
+          <View style={{ borderRadius: 12, flex: 1, overflow: 'hidden' }}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(main)" />
+            </Stack>
+          </View>
         </View>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
