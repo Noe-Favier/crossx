@@ -20,7 +20,7 @@ export default function TabTwoScreen() {
         <Text style={{ fontSize: 20 }}>
           Profile of <Text style={{ fontWeight: 'bold' }}>{userState?.user?.username}</Text>
         </Text>
-        <View style={{ width: '100%', marginTop: 20, height: '10%' }}>
+        <View style={{ minWidth: 300, marginTop: 20, height: '10%' }}>
           <Flex justify='between'>
             <Text>Email</Text>
             <Text>{userState?.user?.email}</Text>
