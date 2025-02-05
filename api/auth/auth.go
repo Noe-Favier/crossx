@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"crossx/models"
+
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -35,10 +36,15 @@ func GenerateJWT(user models.User) (string, error) {
 	return token.SignedString(secret)
 }
 
+// ValidateTokenFunc est la fonction utilisée pour valider le token.
+// Par défaut, elle pointe sur la fonction ValidateToken, mais elle pourra être remplacée en test.
+var ValidateTokenFunc = ValidateToken
+
+// HashPassword, CheckPasswordHash, GenerateJWT, ValidateToken restent inchangés...
+
 // ValidateToken vérifie la validité d'un token
 func ValidateToken(tokenString string) (*jwt.Token, error) {
 	secret := []byte(os.Getenv("JWT_SECRET"))
-
 	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid token")

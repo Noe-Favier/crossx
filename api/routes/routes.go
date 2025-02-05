@@ -60,7 +60,6 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	r.setupPublicRoutes()
 
 	// Routes privées
-	r.setupProtectedRoutes()
 	r.setupProtectedCommentRoutes()
 	r.setupProtectedPostRoutes()
 	r.setupProtectedUserRoutes()
@@ -75,14 +74,6 @@ func (r *Routes) setupPublicRoutes() {
 		public.POST("/login", publicHandlers.Login)
 		public.POST("/signup", publicHandlers.Signup)
 		// Other existing public routes
-	}
-}
-
-func (r *Routes) setupProtectedRoutes() {
-	protected := r.router.Group("/api/v1")
-	protected.Use(middlewares.AuthMiddleware())
-	{
-		protected.GET("/test", privateHandlers.TestHandler)
 	}
 }
 

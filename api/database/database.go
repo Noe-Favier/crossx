@@ -42,3 +42,8 @@ func SetupDB() {
 func GetDB() *gorm.DB {
 	return db
 }
+
+// SetTestDB return une db pour les test
+func SetTestDB(testDB *gorm.DB) {
+	db = testDB
+}

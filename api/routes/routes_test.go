@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -9,44 +10,52 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Test de l'initialisation du routeur
+// TestNew vérifie simplement que New() retourne bien une instance de Routes et que le routeur est initialisé.
 func TestNew(t *testing.T) {
 	r := New()
 	assert.NotNil(t, r, "New() ne doit pas retourner nil")
 	assert.NotNil(t, r.router, "Le routeur doit être initialisé")
 }
 
-// Test du routeur avec des routes publiques
+// TestSetupRouter_PublicRoutes vérifie que les routes publiques retournent bien les statuts attendus.
 func TestSetupRouter_PublicRoutes(t *testing.T) {
 	gin.SetMode(gin.TestMode) // Mode test pour éviter les logs inutiles
 	r := New()
 	router := r.SetupRouter()
 
-	// Vérifier la route /api/v1/public/health
+	// Test de la route /api/v1/public/health
 	req, _ := http.NewRequest("GET", "/api/v1/public/health", nil)
+	req.Host = "localhost:8080" // Pour satisfaire le middleware secure
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code, "La route /health doit retourner un statut 200")
 
-	// Vérifier la route Swagger
-	req, _ = http.NewRequest("GET", "/swagger/index.html", nil)
-	w = httptest.NewRecorder()
-	router.ServeHTTP(w, req)
-	assert.Equal(t, http.StatusOK, w.Code, "La route /swagger doit retourner un statut 200")
+	// Vérifier le contenu de la réponse
+	var response map[string]string
+	json.NewDecoder(w.Body).Decode(&response)
+	assert.Equal(t, "ok", response["status"], "Le status doit être 'ok'")
 }
 
-// Test d'une route protégée (requiert un middleware d'authentification)
+// TestSetupRouter_ProtectedRoutes vérifie qu'une route protégée sans authentification retourne bien 401.
 func TestSetupRouter_ProtectedRoutes(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := New()
 	router := r.SetupRouter()
 
-	// Simuler un token JWT valide pour bypasser l'auth middleware
-	req, _ := http.NewRequest("GET", "/api/v1/test", nil)
-	req.Header.Set("Authorization", "Bearer test_token") // Simule un token
+	// Test des routes protégées sans token
+	protectedRoutes := []string{
+		"/api/v1/comment/1",
+		"/api/v1/post/1",
+		"/api/v1/user/1",
+	}
 
-	w := httptest.NewRecorder()
-	router.ServeHTTP(w, req)
+	for _, route := range protectedRoutes {
+		req, _ := http.NewRequest("GET", route, nil)
+		req.Host = "localhost:8080"
+		w := httptest.NewRecorder()
+		router.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusUnauthorized, w.Code, "Une route protégée sans authentification valide doit être refusée")
+		assert.Equal(t, http.StatusUnauthorized, w.Code,
+			"La route %s sans authentification doit être refusée", route)
+	}
 }

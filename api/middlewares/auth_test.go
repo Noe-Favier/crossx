@@ -6,6 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"crossx/auth"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
@@ -55,7 +57,11 @@ func TestAuthMiddleware_InvalidFormat(t *testing.T) {
 }
 
 func TestAuthMiddleware_InvalidToken(t *testing.T) {
-	// Mock temporairement ValidateToken
+	// Sauvegarder la fonction d'origine
+	originalValidateTokenFunc := auth.ValidateTokenFunc
+	// Remplacer par notre mock
+	auth.ValidateTokenFunc = mockValidateToken
+	defer func() { auth.ValidateTokenFunc = originalValidateTokenFunc }()
 
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
@@ -75,7 +81,11 @@ func TestAuthMiddleware_InvalidToken(t *testing.T) {
 }
 
 func TestAuthMiddleware_ValidToken(t *testing.T) {
-	// Mock temporairement ValidateToken
+	// Sauvegarder la fonction d'origine
+	originalValidateTokenFunc := auth.ValidateTokenFunc
+	// Remplacer par notre mock pour retourner un token valide
+	auth.ValidateTokenFunc = mockValidateToken
+	defer func() { auth.ValidateTokenFunc = originalValidateTokenFunc }()
 
 	gin.SetMode(gin.TestMode)
 	router := gin.New()

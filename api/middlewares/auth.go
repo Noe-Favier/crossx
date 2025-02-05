@@ -2,9 +2,10 @@ package middlewares
 
 import (
 	"crossx/auth"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -24,7 +25,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		token, err := auth.ValidateToken(bearerToken[1])
+		// Utilisation de la fonction assignable
+		token, err := auth.ValidateTokenFunc(bearerToken[1])
 		if err != nil || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 			c.Abort()
