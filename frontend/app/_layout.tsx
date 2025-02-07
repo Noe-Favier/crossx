@@ -104,7 +104,7 @@ export function AuthenticatedStack() {
             return (
               <Pressable
                 key={item.url}
-                onPress={() => router.push(`/(main)${item.url}` as any)}
+                onPress={() => router.replace(`/(main)${item.url}` as any)}
                 android_ripple={{ color: 'lightgray' }}
                 style={{ flexBasis: '33%', alignItems: 'center', justifyContent: 'center', height: 50 }}>
                 <Icon name={item.icon as any} size='lg' color={isActived ? '#008' : '#000'} />
