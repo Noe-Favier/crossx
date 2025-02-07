@@ -13,5 +13,8 @@ type Post struct {
 	MediaUrl string `json:"media_url"`
 	User     User   `json:"user" gorm:"foreignKey:UserID"`
 
-	UserID int `json:"user_id"`
+	Views []User `json:"views" gorm:"many2many:post_views;"`
+	Likes []User `json:"likes" gorm:"many2many:post_likes;"`
+
+	UserID uint `json:"user_id"`
 }

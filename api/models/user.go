@@ -10,8 +10,12 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 
 	Bio               string `json:"bio"`
-	Email             string `json:"email" gorm:"not null;uniqueIndex"`
+	Email             string `json:"-" gorm:"not null;uniqueIndex"`
 	Username          string `json:"username" gorm:"not null;uniqueIndex"`
-	PasswordHash      string `json:"password_hash" gorm:"not null"`
+	PasswordHash      string `json:"-" gorm:"not null"`
 	ProfilePictureUrl string `json:"profile_picture_url"`
+
+	Posts    []Post    `json:"-"`
+	Comments []Comment `json:"-"`
+	Likes    []Post    `json:"-"`
 }

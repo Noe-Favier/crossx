@@ -96,6 +96,9 @@ func (r *Routes) setupProtectedPostRoutes() {
 		protected.POST("/", privateHandlers.CreatePost)      // Création d'un post
 		protected.PUT("/:id", privateHandlers.UpdatePost)    // Modification d'un post
 		protected.DELETE("/:id", privateHandlers.DeletePost) // Suppression d'un post
+
+		protected.POST("/:id/like", privateHandlers.LikePost)     // Like d'un post
+		protected.POST("/:id/unlike", privateHandlers.UnlikePost) // Unlike d'un post
 	}
 }
 

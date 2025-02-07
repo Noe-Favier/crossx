@@ -3,9 +3,11 @@ package private
 import (
 	"crossx/database"
 	"crossx/models"
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 // GetPost - Consultation d'un post
@@ -25,7 +27,11 @@ func GetPost(c *gin.Context) {
 	id := c.Param("id")
 	var post models.Post
 
-	if err := db.Preload("User").First(&post, id).Error; err != nil {
+	if err := db.
+		Preload("User").
+		Preload("Likes").
+		Preload("Views").
+		First(&post, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
 		} else {
@@ -52,11 +58,15 @@ func GetPost(c *gin.Context) {
 //	@Security		ApiKeyAuth
 func CreatePost(c *gin.Context) {
 	db := database.GetDB()
+	user := c.MustGet("user").(models.User)
 	var input models.Post
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	input.UserID = user.ID
 
 	if err := db.Create(&input).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -84,7 +94,10 @@ func CreatePost(c *gin.Context) {
 func UpdatePost(c *gin.Context) {
 	db := database.GetDB()
 	id := c.Param("id")
+	user := c.MustGet("user").(models.User)
 	var post models.Post
+
+	fmt.Printf("%v TODO: check if user is the owner of the post\n", user)
 
 	if err := db.First(&post, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -104,6 +117,8 @@ func UpdatePost(c *gin.Context) {
 	post.Content = input.Content
 	post.MediaUrl = input.MediaUrl
 	post.UserID = input.UserID
+
+	fmt.Printf("%v <--- save\n", user)
 
 	if err := db.Save(&post).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -128,7 +143,10 @@ func UpdatePost(c *gin.Context) {
 func DeletePost(c *gin.Context) {
 	db := database.GetDB()
 	id := c.Param("id")
+	user := c.MustGet("user").(models.User)
 	var post models.Post
+
+	fmt.Printf("%v TODO: check if user is the owner of the post\n", user)
 
 	if err := db.First(&post, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -145,4 +163,85 @@ func DeletePost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Post deleted successfully"})
+}
+
+// LikePost - Like d'un post
+//
+//	@Summary		Like d'un post
+//	@Description	Permet de liker un post
+//	@Tags			posts
+//	@Produce		json
+//	@Param			id		path		int	true	"ID du post"
+//	@Success		200		{object}	map[string]string	"Post liked successfully"
+//	@Failure		404		{object}	map[string]string	"Post not found"
+//	@Failure		500		{object}	map[string]string	"Erreur interne"
+//	@Router			/posts/{id}/like [post]
+//	@Security		ApiKeyAuth
+func LikePost(c *gin.Context) {
+	db := database.GetDB()
+	id := c.Param("id")
+	user := c.MustGet("user").(models.User)
+
+	var post models.Post
+
+	if err := db.First(&post, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	post.Likes = append(post.Likes, user)
+
+	if err := db.Save(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post liked successfully"})
+}
+
+// UnlikePost - Unlike d'un post
+//
+//	@Summary		Unlike d'un post
+//	@Description	Permet de retirer un like d'un post
+//	@Tags			posts
+//	@Produce		json
+//	@Param			id		path		int	true	"ID du post"
+//	@Success		200		{object}	map[string]string	"Post unliked successfully"
+//	@Failure		404		{object}	map[string]string	"Post not found"
+//	@Failure		500		{object}	map[string]string	"Erreur interne"
+//	@Router			/posts/{id}/unlike [post]
+//	@Security		ApiKeyAuth
+func UnlikePost(c *gin.Context) {
+	db := database.GetDB()
+	id := c.Param("id")
+	user := c.MustGet("user").(models.User)
+
+	var post models.Post
+
+	if err := db.First(&post, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	for i, u := range post.Likes {
+		if u.ID == user.ID {
+			post.Likes = append(post.Likes[:i], post.Likes[i+1:]...)
+			break
+		}
+	}
+
+	if err := db.Save(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post unliked successfully"})
 }

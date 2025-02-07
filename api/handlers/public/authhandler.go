@@ -6,8 +6,10 @@ import (
 	"crossx/models"
 	"crossx/models/dto"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 func Login(c *gin.Context) {
@@ -69,6 +71,12 @@ func Signup(c *gin.Context) {
 	}
 
 	if err := db.Create(&user).Error; err != nil {
+
+		if strings.Contains(err.(*pgconn.PgError).Message, "duplicate key value violates unique constraint") {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Username or email already taken"})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "User creation failed"})
 		return
 	}

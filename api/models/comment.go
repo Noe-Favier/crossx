@@ -13,6 +13,6 @@ type Comment struct {
 	Post    Post   `json:"post" gorm:"foreignKey:PostID"`
 	User    User   `json:"user" gorm:"foreignKey:UserID"`
 
-	PostID int `json:"post_id"`
-	UserID int `json:"user_id"`
+	PostID uint `json:"post_id"`
+	UserID uint `json:"user_id"`
 }

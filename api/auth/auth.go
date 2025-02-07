@@ -28,9 +28,10 @@ func GenerateJWT(user models.User) (string, error) {
 	secret := []byte(os.Getenv("JWT_SECRET")) // Définissez cette variable d'environnement
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": user.ID,
-		"email":   user.Email,
-		"exp":     time.Now().Add(time.Hour * 72).Unix(),
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	})
 
 	return token.SignedString(secret)
@@ -51,4 +52,9 @@ func ValidateToken(tokenString string) (*jwt.Token, error) {
 		}
 		return secret, nil
 	})
+}
+
+func PartialUserFromToken(token *jwt.Token) models.User {
+	tmp := token.Claims.(jwt.MapClaims)
+	return models.User{Username: tmp["username"].(string), ID: uint(tmp["id"].(float64)), Email: tmp["email"].(string)}
 }
