@@ -31,7 +31,6 @@ func (r *Routes) SetupRouter() *gin.Engine {
 
 	//	Security headers
 	secureMiddleware := secure.New(secure.Options{
-		AllowedHosts:          []string{"localhost:8080"},
 		SSLRedirect:           false,
 		STSSeconds:            315360000,
 		STSIncludeSubdomains:  true,
@@ -70,10 +69,10 @@ func (r *Routes) SetupRouter() *gin.Engine {
 func (r *Routes) setupPublicRoutes() {
 	public := r.router.Group("/api/v1/public")
 	{
+		public.GET("/me", publicHandlers.Me)
 		public.GET("/health", publicHandlers.HealthHandler)
 		public.POST("/login", publicHandlers.Login)
 		public.POST("/signup", publicHandlers.Signup)
-		// Other existing public routes
 	}
 }
 

@@ -92,3 +92,8 @@ func Signup(c *gin.Context) {
 		"user":  user,
 	})
 }
+
+func Me(c *gin.Context) {
+	user := c.MustGet("user").(models.User)
+	c.JSON(http.StatusOK, user)
+}

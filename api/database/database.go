@@ -15,7 +15,7 @@ func SetupDB() {
 	user := "gorm"
 	password := "gorm"
 	dbname := "crossx"
-	port := "5432"
+	port := "5433"
 
 	var err error
 
