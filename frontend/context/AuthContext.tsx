@@ -7,6 +7,7 @@ interface AuthContextType {
     userState: { user: User | null, token: string } | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    getMe: () => Promise<User>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -26,13 +27,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         loadUser();
     }, []);
 
-    const login = async (email: string, password: string) => {
-        const res = await apiLogin({ email, password });
-        const token = res.token;
-        await AsyncStorage.setItem('token', token);
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        setUser(res);
+    const login = async (username: string, password: string) => {
+        try {
+            const res = await apiLogin({ username, password });
+            const token = res.token;
+            await AsyncStorage.setItem('token', token);
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            setUser({ user: res.user, token });
+        } catch (error) {
+            console.error('Login failed', error);
+        }
     };
+
 
     const logout = async () => {
         await AsyncStorage.removeItem('token');
@@ -41,8 +47,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const getMe = async () => {
-        return user;
+        return apiGetMe();
     }
 
-    return <AuthContext.Provider value={{ userState: user, login, logout }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ userState: user, login, logout, getMe }}>{children}</AuthContext.Provider>;
 };

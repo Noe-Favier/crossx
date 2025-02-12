@@ -5,14 +5,14 @@ import { Button } from '@ant-design/react-native';
 
 export default function LoginScreen() {
     const { login } = useAuth();
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     return (
         <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'center' }}>
-            <TextInput style={inputStyle} placeholder="Email" value={email} onChangeText={setEmail} />
+            <TextInput style={inputStyle} placeholder="Username" value={username} onChangeText={setUsername} />
             <TextInput style={inputStyle} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
-            <Button type='ghost' onPress={() => login(email, password)}>
+            <Button type='ghost' onPress={() => login(username, password)}>
                 Login
             </Button>
         </View>
