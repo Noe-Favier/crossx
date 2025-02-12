@@ -43,6 +43,22 @@ func GetPost(c *gin.Context) {
 	c.JSON(http.StatusOK, post)
 }
 
+func GetPosts(c *gin.Context) {
+	db := database.GetDB()
+	var posts []models.Post
+
+	if err := db.
+		Preload("User").
+		Preload("Likes").
+		Preload("Views").
+		Find(&posts).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, posts)
+}
+
 // CreatePost - Création d'un post
 //
 //	@Summary		Création d'un post

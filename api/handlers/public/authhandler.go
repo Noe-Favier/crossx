@@ -94,6 +94,15 @@ func Signup(c *gin.Context) {
 }
 
 func Me(c *gin.Context) {
-	user := c.MustGet("user").(models.User)
-	c.JSON(http.StatusOK, user)
+	user, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		return
+	}
+	userModel, ok := user.(models.User)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		return
+	}
+	c.JSON(http.StatusOK, userModel)
 }

@@ -91,6 +91,7 @@ func (r *Routes) setupProtectedPostRoutes() {
 	protected := r.router.Group("/api/v1/post")
 	protected.Use(middlewares.AuthMiddleware())
 	{
+		protected.GET("/", privateHandlers.GetPosts)         // Liste des posts
 		protected.GET("/:id", privateHandlers.GetPost)       // Consultation d'un post
 		protected.POST("/", privateHandlers.CreatePost)      // Création d'un post
 		protected.PUT("/:id", privateHandlers.UpdatePost)    // Modification d'un post
