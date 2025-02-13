@@ -32,6 +32,7 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
     response => {
+        console.log('api response', response.data);
         return response.data;
     },
     error => {
@@ -81,6 +82,14 @@ export const apiPostNewPost = async (data: Post): Promise<Post> => {
 export const apiGetPost = async (id: number): Promise<Post> => {
     console.log('apiGetPost', id);
     return api.get(`/post/${id}`);
+}
+
+export const apiLikePost = async (id: number): Promise<void> => {
+    return api.post(`/post/${id}/like`);
+}
+
+export const apiUnlikePost = async (id: number): Promise<void> => {
+    return api.delete(`/post/${id}/unlike`);
 }
 
 export default api;

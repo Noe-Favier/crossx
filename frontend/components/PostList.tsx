@@ -16,6 +16,9 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
                     <Text style={styles.date}>
                         {new Date(item!.created_at!).toLocaleString()} par {item!.user!.username}
                     </Text>
+                    <Text style={styles.date}>
+                        {item.views.length} vues, {item.likes.length} likes
+                    </Text>
                     <Text style={styles.content}>{item.content}</Text>
                 </View>
             </Pressable >
