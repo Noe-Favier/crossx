@@ -44,7 +44,7 @@ export const apiGetMe = async (): Promise<User> => {
     return api.get('/public/me');
 }
 
-export const apiPostSignup = async (data: { email: string, password: string, username: string }): Promise<{ user: User, token: string }> => {
+export const apiSignup = async (data: { email: string, password: string, username: string, image: string }): Promise<{ user: User, token: string }> => {
     return api.post('/public/signup', data);
 }
 

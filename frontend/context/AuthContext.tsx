@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '@/models/user';
-import api, { apiGetMe, apiLogin } from '@/services/api';
+import api, { apiGetMe, apiLogin, apiSignup } from '@/services/api';
 
 interface AuthContextType {
     userState: { user: User | null, token: string } | null;
-    login: (email: string, password: string) => Promise<void>;
+    login: (username: string, password: string) => Promise<void>;
+    signup: (username: string, password: string, email: string, image: string | null) => Promise<void>;
     logout: () => Promise<void>;
     getMe: () => Promise<User>;
 }
@@ -28,17 +29,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const login = async (username: string, password: string) => {
-        try {
-            const res = await apiLogin({ username, password });
-            const token = res.token;
-            await AsyncStorage.setItem('token', token);
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setUser({ user: res.user, token });
-        } catch (error) {
-            console.error('Login failed', error);
-        }
+        const res = await apiLogin({ username, password });
+        const token = res.token;
+        await AsyncStorage.setItem('token', token);
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        setUser({ user: res.user, token });
     };
 
+    const signup = async (username: string, password: string, email: string, image: string | null) => {
+        const res = await apiSignup({ username: username, password: password, email: email, image: image ?? require('@/assets/images/no-profile.webp') });
+        const token = res.token;
+        await AsyncStorage.setItem('token', token);
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        setUser({ user: res.user, token });
+    };
 
     const logout = async () => {
         await AsyncStorage.removeItem('token');
@@ -50,5 +54,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return apiGetMe();
     }
 
-    return <AuthContext.Provider value={{ userState: user, login, logout, getMe }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ userState: user, login, signup, logout, getMe }}>{children}</AuthContext.Provider>;
 };

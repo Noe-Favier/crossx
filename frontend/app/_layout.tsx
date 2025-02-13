@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import LoginScreen from './(main)/login';
-import { useRoute } from '@react-navigation/native';
+import SignupScreen from './(main)/signup';
 
 SplashScreen.preventAutoHideAsync();
 

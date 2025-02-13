@@ -9,15 +9,12 @@ export default function TabTwoScreen() {
   const userState = auth.userState?.user;
   const logout = auth.logout;
 
-  //TODO: enhance
-  const unknownUserImg = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <Flex style={{ flex: 1 }} align='center' justify='center' direction='column'>
         <View style={{ marginBottom: 20 }}>
           <Image
-            source={{ uri: ((userState?.profile_picture_url?.length ?? 0) > 0) ? userState?.profile_picture_url! : unknownUserImg }}
+            source={((userState?.profile_picture_url?.length ?? 0) > 0) ? { uri: userState?.profile_picture_url! } : require('@/assets/images/no-profile.webp')}
             style={{ width: 100, height: 100, borderRadius: 50 }}
           />
         </View>
