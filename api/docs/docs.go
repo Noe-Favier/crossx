@@ -481,19 +481,51 @@ const docTemplate = `{
                 }
             }
         },
-        "/public/health": {
-            "get": {
-                "description": "Get API health status",
+        "/posts/{id}/like": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Permet de liker un post",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "public"
+                    "posts"
                 ],
-                "summary": "Health check endpoint",
+                "summary": "Like d'un post",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID du post",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Post liked successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -504,21 +536,71 @@ const docTemplate = `{
                 }
             }
         },
-        "/test": {
-            "get": {
+        "/posts/{id}/unlike": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Test endpoint requiring authentication",
+                "description": "Permet de retirer un like d'un post",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "protected"
+                    "posts"
                 ],
-                "summary": "Test protected endpoint",
+                "summary": "Unlike d'un post",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID du post",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post unliked successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/health": {
+            "get": {
+                "description": "Get API health status",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "public"
+                ],
+                "summary": "Health check endpoint",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -808,7 +890,16 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "likes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.User"
+                    }
+                },
                 "media_url": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -819,6 +910,12 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
+                },
+                "views": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.User"
+                    }
                 }
             }
         },
@@ -831,14 +928,8 @@ const docTemplate = `{
                 "created_at": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
-                },
-                "password_hash": {
-                    "type": "string"
                 },
                 "profile_picture_url": {
                     "type": "string"
