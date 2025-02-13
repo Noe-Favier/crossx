@@ -74,7 +74,7 @@ export default function PostScreen() {
                             value={commentInput}
                             onChangeText={(text) => setCommentInput(text)} />
                         <Button
-                            onPress={() => { apiPostComment(post.id!, commentInput).then(() => setCommentInput('')); }}
+                            onPress={() => { apiPostComment(post.id!, commentInput).then((cm: Comment) => { setCommentInput(''); post.comments.push(cm); }) }}
                             style={{ flexBasis: '20%' }}
                             type="primary"
                             disabled={!commentInput}>
@@ -82,7 +82,8 @@ export default function PostScreen() {
                         </Button>
                     </View>
                 </>
-            )}
+            )
+            }
             <View>
                 <Button
                     onPress={() => liked ? apiUnlikePost(post.id!).then(() => setLiked(false)) : apiLikePost(post.id!).then(() => setLiked(true))}
@@ -93,7 +94,7 @@ export default function PostScreen() {
                     Back
                 </Button>
             </View>
-        </View>
+        </View >
     );
 }
 

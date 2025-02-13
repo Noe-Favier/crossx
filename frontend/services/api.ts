@@ -93,7 +93,7 @@ export const apiUnlikePost = async (id: number): Promise<void> => {
     return api.post(`/post/${id}/unlike`);
 }
 
-export const apiPostComment = async (postId: number, content: string): Promise<void> => {
+export const apiPostComment = async (postId: number, content: string): Promise<Comment> => {
     const comment: Comment = { content, post_id: postId };
     return api.post(`/comment`, comment);
 }
