@@ -71,7 +71,10 @@ export function AuthenticatedStack() {
         <Flex style={{ backgroundColor: '#f5f5f9' }} justify='between'>
           <Flex align='center' justify='start'>
             <WingBlank style={{ paddingLeft: 1, paddingRight: 0, marginRight: 0, marginLeft: 10 }}>
-              <Icon name='heat-map' size='lg' color='#000' />
+              <Image 
+                source={require('@/assets/images/logo_donjons_et_confessions_clean.png')}
+                style={{ width: 30, height: 30 }} // Ajustez ces dimensions selon vos besoins
+              />
             </WingBlank>
             <WingBlank>
               <Text style={{ fontSize: 17, paddingTop: 4, fontFamily: 'Macondo' }}>
