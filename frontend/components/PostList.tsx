@@ -10,7 +10,7 @@ interface PostListProps {
 const PostList: React.FC<PostListProps> = ({ posts }) => {
     const renderPost = ({ item, index }: { item: Post, index: number }) => {
         return (
-            <Pressable onPress={() => item.id && router.push(`/(main)/post/${item.id}`)}>
+            <Pressable onPress={() => item.id && router.replace(`/(main)/post/${item.id}`)}>
                 <View style={index === posts.length - 1 ? styles.lastPostContainer : styles.postContainer}>
                     <Text style={styles.userName}>{item!.title!}</Text>
                     <Text style={styles.date}>

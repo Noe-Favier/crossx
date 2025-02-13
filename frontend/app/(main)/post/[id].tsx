@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@ant-design/react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { apiGetMe, apiGetPost, apiLikePost } from '@/services/api';
+import { apiGetMe, apiGetPost, apiLikePost, apiUnlikePost } from '@/services/api';
 import { Post } from '@/models/post';
 import { useAuth } from '@/context/AuthContext';
 
@@ -50,7 +50,7 @@ export default function PostScreen() {
                     style={{ ...styles.backButton, backgroundColor: liked ? 'red' : 'gray', borderColor: 'transparent' }}>
                     {liked ? 'unlike' : 'Like'}
                 </Button>
-                <Button onPress={() => router.back()} type="primary" style={styles.backButton}>
+                <Button onPress={() => { router.navigate('/(main)'); }} type="primary" style={styles.backButton}>
                     Back
                 </Button>
             </View>
