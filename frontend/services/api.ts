@@ -76,4 +76,8 @@ export const apiSignup = async (data: FormData): Promise<{ user: User, token: st
     });
 }
 
+export const apiPostNewPost = async (data: Post): Promise<Post> => {
+    return api.post('/post', data);
+}
+
 export default api;

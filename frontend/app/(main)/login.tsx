@@ -3,7 +3,6 @@ import { View, TextInput, Image, Pressable, KeyboardAvoidingView, Platform, Scro
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@ant-design/react-native';
-import { apiSignup } from '@/services/api';
 
 export default function SignupScreen() {
     const { login, signup } = useAuth();

@@ -83,6 +83,7 @@ func CreatePost(c *gin.Context) {
 	}
 
 	input.UserID = user.ID
+	input.User = user
 
 	if err := db.Create(&input).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

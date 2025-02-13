@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import React from 'react';
 import { User } from '@/models/user';
 
-export default function TabTwoScreen() {
+export default function Profile() {
   const auth = useAuth();
   const userState = auth.userState?.user;
   const logout = auth.logout;
