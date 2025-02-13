@@ -9,4 +9,7 @@ export interface Post {
     media_url?: string | null;
     user?: User;
     user_id?: number;
+
+    views: User[];
+    likes: User[];
 }

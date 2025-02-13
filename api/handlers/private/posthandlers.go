@@ -25,6 +25,7 @@ import (
 func GetPost(c *gin.Context) {
 	db := database.GetDB()
 	id := c.Param("id")
+	user := c.MustGet("user").(models.User)
 	var post models.Post
 
 	if err := db.
@@ -38,6 +39,22 @@ func GetPost(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
 		return
+	}
+
+	// Add user to views if not already present
+	var viewed bool
+	for _, viewer := range post.Views {
+		if viewer.ID == user.ID {
+			viewed = true
+			break
+		}
+	}
+	if !viewed {
+		post.Views = append(post.Views, user)
+		if err := db.Save(&post).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, post)
