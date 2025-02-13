@@ -27,13 +27,11 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
     //on request ...
-    console.log(config);
     return config;
 });
 
 api.interceptors.response.use(
     response => {
-        console.log(`${response.config.method?.toUpperCase()} ${response.config.url} => ${response.status} ${JSON.stringify(response.data)}`);
         return response.data;
     },
     error => {
@@ -78,6 +76,11 @@ export const apiSignup = async (data: FormData): Promise<{ user: User, token: st
 
 export const apiPostNewPost = async (data: Post): Promise<Post> => {
     return api.post('/post', data);
+}
+
+export const apiGetPost = async (id: number): Promise<Post> => {
+    console.log('apiGetPost', id);
+    return api.get(`/post/${id}`);
 }
 
 export default api;

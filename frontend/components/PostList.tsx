@@ -1,6 +1,7 @@
 import { Post } from '@/models/post';
+import { router } from 'expo-router';
 import React from 'react';
-import { FlatList, View, Text, Image, StyleSheet } from 'react-native';
+import { FlatList, View, Text, Image, StyleSheet, Pressable } from 'react-native';
 
 interface PostListProps {
     posts: Post[];
@@ -9,13 +10,15 @@ interface PostListProps {
 const PostList: React.FC<PostListProps> = ({ posts }) => {
     const renderPost = ({ item, index }: { item: Post, index: number }) => {
         return (
-            <View style={index === posts.length - 1 ? styles.lastPostContainer : styles.postContainer}>
-                <Text style={styles.userName}>{item!.title!}</Text>
-                <Text style={styles.date}>
-                    {new Date(item!.created_at!).toLocaleString()} par {item!.user!.username}
-                </Text>
-                <Text style={styles.content}>{item.content}</Text>
-            </View>
+            <Pressable onPress={() => item.id && router.push(`/(main)/post/${item.id}`)}>
+                <View style={index === posts.length - 1 ? styles.lastPostContainer : styles.postContainer}>
+                    <Text style={styles.userName}>{item!.title!}</Text>
+                    <Text style={styles.date}>
+                        {new Date(item!.created_at!).toLocaleString()} par {item!.user!.username}
+                    </Text>
+                    <Text style={styles.content}>{item.content}</Text>
+                </View>
+            </Pressable >
         );
     };
 

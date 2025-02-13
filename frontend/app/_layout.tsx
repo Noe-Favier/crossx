@@ -53,7 +53,7 @@ export function AuthenticatedStack() {
     {
       title: 'New post',
       icon: 'file-add',
-      url: '/npost' as const,
+      url: '/post/new' as const,
     }
   ]
 

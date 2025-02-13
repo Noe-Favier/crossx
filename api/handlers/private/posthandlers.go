@@ -51,6 +51,7 @@ func GetPosts(c *gin.Context) {
 		Preload("User").
 		Preload("Likes").
 		Preload("Views").
+		Order("created_at desc").
 		Find(&posts).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
