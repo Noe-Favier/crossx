@@ -6,7 +6,7 @@ import api, { apiGetMe, apiLogin, apiSignup } from '@/services/api';
 interface AuthContextType {
     userState: { user: User | null, token: string } | null;
     login: (username: string, password: string) => Promise<void>;
-    signup: (username: string, password: string, email: string, image: string | null) => Promise<void>;
+    signup: (fd: FormData) => Promise<void>;
     logout: () => Promise<void>;
     getMe: () => Promise<User>;
 }
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser({ user: res.user, token });
     };
 
-    const signup = async (username: string, password: string, email: string, image: string | null) => {
-        const res = await apiSignup({ username: username, password: password, email: email, image: image ?? require('@/assets/images/no-profile.webp') });
+    const signup = async (fd: FormData) => {
+        const res = await apiSignup(fd);
         const token = res.token;
         await AsyncStorage.setItem('token', token);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

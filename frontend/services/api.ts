@@ -13,6 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
     //on request ...
+    console.log(config);
     return config;
 });
 
@@ -44,7 +45,7 @@ export const apiGetMe = async (): Promise<User> => {
     return api.get('/public/me');
 }
 
-export const apiSignup = async (data: { email: string, password: string, username: string, image: string }): Promise<{ user: User, token: string }> => {
+export const apiSignup = async (data: FormData): Promise<{ user: User, token: string }> => {
     return api.post('/public/signup', data);
 }
 

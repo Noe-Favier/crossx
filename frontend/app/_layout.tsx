@@ -7,7 +7,6 @@ import React, { useEffect } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import LoginScreen from './(main)/login';
-import SignupScreen from './(main)/signup';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -83,7 +82,7 @@ export function AuthenticatedStack() {
           <Pressable
             onPress={() => router.push('/profile')}
             style={{ marginRight: 0 }}>
-            <Image source={{ uri: userState.user?.profile_picture_url ?? '' }} style={{ width: 30, height: 30, borderRadius: 20, marginRight: 5 }} />
+            <Image source={userState.user?.profile_picture_url ? { uri: userState.user?.profile_picture_url } : require('@/assets/images/no-profile.webp')} style={{ width: 30, height: 30, borderRadius: 20, marginRight: 5 }} />
           </Pressable>
         </Flex>
 
