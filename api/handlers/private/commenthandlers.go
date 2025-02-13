@@ -3,9 +3,10 @@ package private
 import (
 	"crossx/database"
 	"crossx/models"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 // @Summary		Consultation d'un commentaire
@@ -48,11 +49,13 @@ func GetComment(c *gin.Context) {
 // @Security		ApiKeyAuth
 func CreateComment(c *gin.Context) {
 	db := database.GetDB()
+	user := c.MustGet("user").(models.User)
 	var input models.Comment
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	input.UserID = user.ID
 
 	if err := db.Create(&input).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

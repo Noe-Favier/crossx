@@ -4,6 +4,7 @@ import { Post } from '@/models/post';
 import { User } from '@/models/user';
 import { useAuth } from '@/context/AuthContext';
 import { Stack, router, usePathname } from 'expo-router';
+import { Comment } from '@/models/comment';
 
 const api = axios.create({
     baseURL: 'http://noais.fr:8080/api/v1',
@@ -89,7 +90,12 @@ export const apiLikePost = async (id: number): Promise<void> => {
 }
 
 export const apiUnlikePost = async (id: number): Promise<void> => {
-    return api.delete(`/post/${id}/unlike`);
+    return api.post(`/post/${id}/unlike`);
+}
+
+export const apiPostComment = async (postId: number, content: string): Promise<void> => {
+    const comment: Comment = { content, post_id: postId };
+    return api.post(`/comment`, comment);
 }
 
 export default api;
