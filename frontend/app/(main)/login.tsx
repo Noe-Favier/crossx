@@ -3,6 +3,7 @@ import { View, TextInput, Image, Pressable, KeyboardAvoidingView, Platform, Scro
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@ant-design/react-native';
+import { apiSignup } from '@/services/api';
 
 export default function SignupScreen() {
     const { login, signup } = useAuth();
@@ -36,18 +37,24 @@ export default function SignupScreen() {
         fd.append('username', username);
         fd.append('password', password);
         fd.append('email', email);
+
         if (image) {
-            const response = await fetch(image);
-            const blob = await response.blob();
-            fd.append('profileImage', blob, 'profile.jpg');
-        } else {
-            const def = require('@/assets/images/no-profile.webp');
-            const response = await fetch(def);
-            const blob = await response.blob();
-            fd.append('profileImage', blob, 'profile.jpg');
+            // Assurez-vous que c'est bien un Blob ou un File
+            console.log('Image type:', typeof image, typeof image === 'string');
+            fd.append('profileImage', image);
         }
 
-        await signup(fd);
+        // Log le contenu du FormData avant envoi
+        fd.forEach((value, key) => {
+            console.log(`${key}:`, value);
+        });
+
+        try {
+            const response = await signup(fd);
+            console.log('Signup response:', response);
+        } catch (error) {
+            console.error('Signup error:', error);
+        }
     };
 
     const commonFormElt = (

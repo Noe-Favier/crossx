@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { getMeMock, getPostsMock } from './mock';
 import { Post } from '@/models/post';
 import { User } from '@/models/user';
@@ -9,6 +9,20 @@ const api = axios.create({
     baseURL: 'http://noais.fr:8080/api/v1',
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' },
+    // Ajouter cette configuration pour gérer correctement FormData
+    transformRequest: [
+        function (data, headers) {
+            if (data instanceof FormData) {
+                headers['Content-Type'] = 'multipart/form-data';
+                return data;
+            }
+            if (typeof data === 'object') {
+                headers['Content-Type'] = 'application/json';
+                return JSON.stringify(data);
+            }
+            return data;
+        }
+    ],
 });
 
 api.interceptors.request.use(async (config) => {
@@ -46,7 +60,20 @@ export const apiGetMe = async (): Promise<User> => {
 }
 
 export const apiSignup = async (data: FormData): Promise<{ user: User, token: string }> => {
-    return api.post('/public/signup', data);
+    // Convertir FormData en objet pour voir le contenu
+    const formDataObj: any = {};
+    data.forEach((value, key) => {
+        formDataObj[key] = value;
+    });
+    console.log('FormData content:', formDataObj);
+
+    return api.post('/public/signup', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        // Désactiver la transformation par défaut pour FormData
+        transformRequest: [(data) => data],
+    });
 }
 
 export default api;

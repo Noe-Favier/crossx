@@ -63,6 +63,8 @@ func (r *Routes) SetupRouter() *gin.Engine {
 	r.setupProtectedPostRoutes()
 	r.setupProtectedUserRoutes()
 
+	r.router.Static("/api/v1/uploads/profiles", "./uploads/profiles")
+
 	return r.router
 }
 
