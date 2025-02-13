@@ -32,6 +32,8 @@ func GetPost(c *gin.Context) {
 		Preload("User").
 		Preload("Likes").
 		Preload("Views").
+		Preload("Comments").
+		Preload("Comments.User").
 		First(&post, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
@@ -68,6 +70,7 @@ func GetPosts(c *gin.Context) {
 		Preload("User").
 		Preload("Likes").
 		Preload("Views").
+		Preload("Comments").
 		Order("created_at desc").
 		Find(&posts).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
