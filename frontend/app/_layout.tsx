@@ -73,7 +73,7 @@ export function AuthenticatedStack() {
             <WingBlank style={{ paddingLeft: 1, paddingRight: 0, marginRight: 0, marginLeft: 10 }}>
               <Image 
                 source={require('@/assets/images/logo_donjons_et_confessions_clean.png')}
-                style={{ width: 30, height: 30 }} // Ajustez ces dimensions selon vos besoins
+                style={{ width: 50, height: 50 }} // Ajustez ces dimensions selon vos besoins
               />
             </WingBlank>
             <WingBlank>

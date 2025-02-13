@@ -31,6 +31,11 @@ export default function SignupScreen() {
         }
     };
 
+    <Image 
+    source={require('@/assets/images/logo_donjons_et_confessions_clean.png')}
+    style={{ width: 60, height: 60 }} // Ajustez ces dimensions selon vos besoins
+    />
+
     const proceedSignup = async () => {
         const fd = new FormData();
         fd.append('username', username);
